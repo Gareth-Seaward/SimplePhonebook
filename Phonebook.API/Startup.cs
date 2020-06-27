@@ -25,11 +25,19 @@ namespace Phonebook.API
                 x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();
             services.AddCors();
+            ConfigureUtils(services);
+            ConfigureRepositories(services);
         }
 
         private void ConfigureUtils(IServiceCollection services)
         {
             services.AddScoped<IPasswordHasher, PasswordHasher>();
+            services.AddScoped<IJwtTokenGenerator,JwtTokenGenerator>();
+        }
+
+        private void ConfigureRepositories(IServiceCollection services)
+        {
+            services.AddScoped<IAuthRepository, AuthRepository>(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
