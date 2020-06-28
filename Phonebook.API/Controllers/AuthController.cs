@@ -1,17 +1,8 @@
 
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using Phonebook.API.Data;
 using Phonebook.API.Dtos;
-using Phonebook.API.Models;
 using Phonebook.API.Utils;
 
 namespace Phonebook.API.Controllers
@@ -21,11 +12,15 @@ namespace Phonebook.API.Controllers
   public class AuthController : ControllerBase
   {
     private readonly IAuthRepository _authRepo;
+    private readonly IPhonebookRepository _phonebookRepo;
     private readonly IJwtTokenGenerator _tokenGenerator;
 
-    public AuthController(IAuthRepository authRepo, IJwtTokenGenerator tokenGenerator)
+    public AuthController(IAuthRepository authRepo,
+      IPhonebookRepository phonebookRepo,
+      IJwtTokenGenerator tokenGenerator)
     {
       _authRepo = authRepo;
+      _phonebookRepo = phonebookRepo;
       _tokenGenerator = tokenGenerator;
     }
 
@@ -37,12 +32,20 @@ namespace Phonebook.API.Controllers
       if (await _authRepo.DoesUserExist(userForRegisterDto.Username))
         return BadRequest("username already exists");
 
-      var userToCreate = new User
+      var userToCreate = new Models.User
       {
         Username = userForRegisterDto.Username
       };
 
       var createdUser = await _authRepo.Register(userToCreate, userForRegisterDto.Password);
+
+      var phonebookToCreate = new Models.Phonebook
+      {
+        Name = userForRegisterDto.PhonebookName,
+        User = createdUser
+      };
+
+      await _phonebookRepo.CreatePhonebook(phonebookToCreate);
 
       return StatusCode(201);
     }

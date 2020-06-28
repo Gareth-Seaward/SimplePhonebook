@@ -16,6 +16,28 @@ namespace Phonebook.API.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.2");
 
+            modelBuilder.Entity("Phonebook.API.Models.Entry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("PhonebookId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PhonebookId");
+
+                    b.ToTable("Entries");
+                });
+
             modelBuilder.Entity("Phonebook.API.Models.Phonebook", b =>
                 {
                     b.Property<int>("Id")
@@ -25,7 +47,12 @@ namespace Phonebook.API.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Phonebooks");
                 });
@@ -48,6 +75,20 @@ namespace Phonebook.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Phonebook.API.Models.Entry", b =>
+                {
+                    b.HasOne("Phonebook.API.Models.Phonebook", "Phonebook")
+                        .WithMany()
+                        .HasForeignKey("PhonebookId");
+                });
+
+            modelBuilder.Entity("Phonebook.API.Models.Phonebook", b =>
+                {
+                    b.HasOne("Phonebook.API.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

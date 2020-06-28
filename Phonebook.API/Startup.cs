@@ -43,6 +43,7 @@ namespace Phonebook.API
         private void ConfigureRepositories(IServiceCollection services)
         {
             services.AddScoped<IAuthRepository, AuthRepository>(); 
+            services.AddScoped<IPhonebookRepository,PhonebookRepository>();
         }
         private void ConfigureJwtBearerAuthentication(IServiceCollection services)
         {

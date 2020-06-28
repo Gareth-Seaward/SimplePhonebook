@@ -14,7 +14,6 @@ export class PhonebookComponent implements OnInit {
   ngOnInit() {
     this.getPhonebooks();
   }
-  
 
   getPhonebooks(){
     this.http.get('http://localhost:5000/v1/phonebooks').subscribe(response => {
