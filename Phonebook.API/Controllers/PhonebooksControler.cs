@@ -9,6 +9,7 @@ using Phonebook.API.Data;
 
 namespace DatingApp.API.Controllers
 {
+
   [Authorize]
   [Route("v1/[controller]")]
   [ApiController]

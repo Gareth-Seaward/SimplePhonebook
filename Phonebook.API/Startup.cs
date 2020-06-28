@@ -31,6 +31,7 @@ namespace Phonebook.API
             ConfigureUtils(services);
             ConfigureRepositories(services);
             ConfigureJwtBearerAuthentication(services);
+
         }
 
         private void ConfigureUtils(IServiceCollection services)
@@ -43,7 +44,6 @@ namespace Phonebook.API
         {
             services.AddScoped<IAuthRepository, AuthRepository>(); 
         }
-
         private void ConfigureJwtBearerAuthentication(IServiceCollection services)
         {
           services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -72,7 +72,7 @@ namespace Phonebook.API
             app.UseRouting();
 
             app.UseCors(cors => cors.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader() );
-
+            
             app.UseAuthentication();
             app.UseAuthorization();
 
