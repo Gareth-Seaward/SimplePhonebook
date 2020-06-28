@@ -1,5 +1,5 @@
 bin
 obj
 *.db
-appsettings.json
+#appsettings.json should be ignored.
 
