@@ -31,7 +31,7 @@ namespace DatingApp.API.Controllers
     }
 
     [HttpGet("users/{id}/[controller]")]
-    [ServiceFilter(typeof(ValidatePhonebookIdAttribute))]
+    [ServiceFilter(typeof(ValidateUSerIdAttribute))]
     public async Task<IActionResult> GetPhonebook(int id)
     {
       var phonebook = await GetPhonebookFromRepo(id);
@@ -44,7 +44,7 @@ namespace DatingApp.API.Controllers
 
     // PUT api/values/5
     [HttpPut("users/{id}/[controller]")]
-    [ServiceFilter(typeof(ValidatePhonebookIdAttribute))]
+    [ServiceFilter(typeof(ValidateUSerIdAttribute))]
     public async Task<IActionResult> UpdatePhoneBook(int id, [FromBody] PhonebookForUpdateDto phonebookForupdate)
     {
       var phonebook = await GetPhonebookFromRepo(id);

@@ -51,11 +51,14 @@ namespace Phonebook.API
         {
             services.AddScoped<IAuthRepository, AuthRepository>(); 
             services.AddScoped<IPhonebookRepository,PhonebookRepository>();
+            services.AddScoped<IEntriesRepository, EntriesRepository>();
         }
 
         private void ConfigureActionFilters(IServiceCollection services)
         {
+          services.AddScoped<ValidateUSerIdAttribute>();
           services.AddScoped<ValidatePhonebookIdAttribute>();
+          services.AddScoped<ValidateEntryIdAttribute>();
         }
         private void ConfigureJwtBearerAuthentication(IServiceCollection services)
         {

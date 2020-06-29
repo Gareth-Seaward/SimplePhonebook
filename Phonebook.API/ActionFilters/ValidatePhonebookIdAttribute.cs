@@ -1,11 +1,9 @@
-using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Phonebook.API.Constants;
 using Phonebook.API.Data;
 using Phonebook.API.Helpers;
-using Models = Phonebook.API.Models;
 
 namespace Phonebook.API.ActionFilters
 {
@@ -26,13 +24,12 @@ namespace Phonebook.API.ActionFilters
 
     private async Task<bool> IsDoActionFilter(ActionExecutingContext context)
     {
-      if (!IsValidUserIdAgrument(context)) return false;
+      if (!HasPhonebookId(context)) return false;
 
-      return await IsUserValid(context);
+      return await IsValidPhoneBook(context);
     }
 
-
-    private bool IsValidUserIdAgrument(ActionExecutingContext context)
+    private bool HasPhonebookId(ActionExecutingContext context)
     {
       if (context.HasId()) return true;
 
@@ -40,19 +37,30 @@ namespace Phonebook.API.ActionFilters
       return false;
     }
 
-    private async Task<bool> IsUserValid(ActionExecutingContext context)
+    private async Task<bool> IsValidPhoneBook(ActionExecutingContext context)
     {
-      return await Task.Run(() =>
+      var phonebook = await _phonebookRepo.GetPhonebook(context.GetId());
+
+      var userClaim = TryGetJwtClaim(context);
+      if (IsPhonebookUserMatchingClaim(phonebook, userClaim))
       {
-        var userId = context.GetId();
-        if (userId == -1) return false;
+        SavePhonebookToContextCache(context, phonebook);
+        return true;
+      }
 
-        var userClaim = TryGetJwtClaim(context);
-        if (userClaim == userId.ToString()) return true;
+      context.Result = new UnauthorizedResult();
+      return false;
+      
+    }
 
-        context.Result = new UnauthorizedResult();
-        return false;
-      });
+    private static void SavePhonebookToContextCache(ActionExecutingContext context, Models.Phonebook phonebook)
+    {
+      context.HttpContext.Items[HttpContextConstants.PhonebookItem] = phonebook;
+    }
+
+    private static bool IsPhonebookUserMatchingClaim(Models.Phonebook phonebook, string userClaim)
+    {
+      return phonebook.User.Id.ToString() == userClaim;
     }
   }
 }

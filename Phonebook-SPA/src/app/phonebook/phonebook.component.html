@@ -1,34 +1,32 @@
-<div class="container mt-4">
-  <div class="row">
-    <form
-      (ngSubmit)="updatePhonebook()"
-      #editPhonebook="ngForm"
-      id="editPhonebook"
+<div class="container mt-2">
+  <form [formGroup]="phonebookForm" (ngSubmit)="updatePhonebook()">
+    <h2 class="text-center text-primary">Edit phonebook</h2>
+    <hr />
+    <label for="name" class="mt-5">Phonebook name</label>
+
+    <input
+      [ngClass]="{
+        'is-invalid':
+          phonebookForm.get('name').errors && phonebookForm.get('name').touched
+      }"
+      class="form-control"
+      name="name"
+      type="text"
+      [(ngModel)]="phonebook.phonebookName"
+      formControlName="name"
+    />
+    <div class="invalid-feedback">Please choose a phonebook name</div>
+    <button
+      [disabled]="!phonebookForm.dirty"
+      type="submit"
+      class="mt-2 btn btn-success"
     >
-      <h4>Edit phonebook</h4>
-      <label for="name" class="mt-5">Phonebook name</label>
+      Save Phonebook
+    </button>
+  </form>
 
-        <input
-          class="form-control"
-          name="name"
-          type="text"
-          [(ngModel)]="phonebook.phonebookName"
-        />
-        <button
-        [disabled]="!editPhonebook.dirty"
-        form="editPhonebook"
-        class="mt-2 btn btn-success"
-      >
-        Save Phonebook
-      </button>
-    </form>
-
-
-  </div>
-  <div class="row">
-    <div class="alert alert-info" *ngIf="editPhonebook.dirty">
-      <strong>Information: </strong> You have made changes, any unsaved changes
-      will be lost!
-    </div>
+  <div class="alert alert-info mt-4" *ngIf="phonebookForm.dirty">
+    <strong>Information: </strong> You have made changes, any unsaved changes
+    will be lost!
   </div>
 </div>
