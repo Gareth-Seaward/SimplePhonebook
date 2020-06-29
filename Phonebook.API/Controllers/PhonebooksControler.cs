@@ -2,60 +2,65 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Phonebook.API.ActionFilters;
+using Phonebook.API.Constants;
 using Phonebook.API.Data;
+using Phonebook.API.Dtos;
+using Models = Phonebook.API.Models;
 
 namespace DatingApp.API.Controllers
 {
 
   [Authorize]
-  [Route("v1/[controller]")]
+  [Route("v1/")]
   [ApiController]
   public class PhoneBooksController : ControllerBase
   {
-    private readonly DataContext _context;
+    private readonly IPhonebookRepository _phonebookRepo;
+    private readonly IMapper _mapper;
 
-    public PhoneBooksController(DataContext context)
+    public PhoneBooksController(IPhonebookRepository phonebookRepo,
+    IMapper mapper)
     {
-      _context = context;
-    }
-    // GET api/values
-    [HttpGet]
-    public async Task<IActionResult> GetPhoneBooks()
-    {
-      var phonebooks = await _context.Phonebooks.ToListAsync();
-
-      return Ok(phonebooks);
+      _phonebookRepo = phonebookRepo;
+      _mapper = mapper;
     }
 
-    // GET api/values/5
-    [AllowAnonymous]
-    [HttpGet("{id}")]
+    [HttpGet("users/{id}/[controller]")]
+    [ServiceFilter(typeof(ValidatePhonebookIdAttribute))]
     public async Task<IActionResult> GetPhonebook(int id)
     {
-      var phonebook = await _context.Phonebooks.FindAsync(id);
+      var phonebook = await GetPhonebookFromRepo(id);
 
-      return Ok(phonebook); //204 if no content
+      var phonebookForResponse = _mapper.Map<PhonebookForResponseDto>(phonebook);
+      return Ok(phonebookForResponse); //204 if no content
     }
 
-    // POST api/values
-    [HttpPost]
-    public void Post([FromBody] string value)
-    {
-    }
+    
 
     // PUT api/values/5
-    [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
+    [HttpPut("users/{id}/[controller]")]
+    [ServiceFilter(typeof(ValidatePhonebookIdAttribute))]
+    public async Task<IActionResult> UpdatePhoneBook(int id, [FromBody] PhonebookForUpdateDto phonebookForupdate)
     {
+      var phonebook = await GetPhonebookFromRepo(id);
+
+      phonebook.Name = phonebookForupdate.Name;
+
+      await _phonebookRepo.SaveAsync();
+      return Ok();
     }
 
-    // DELETE api/values/5
-    [HttpDelete("{id}")]
-    public void Delete(int id)
+    private async Task<Models.Phonebook> GetPhonebookFromRepo(int id)
     {
+      var phonebook = HttpContext.Items[HttpContextConstants.PhonebookItem] as Models.Phonebook;
+      if (phonebook is null)
+        phonebook = await _phonebookRepo.GetPhonebook(id);
+      return phonebook;
     }
   }
 }

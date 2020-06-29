@@ -9,8 +9,12 @@ namespace Phonebook.API.Helpers
     public AutoMapperProfiles()
     {
       CreateMap<UserForRegisterDto, Models.User>();
+
       CreateMap<UserForRegisterDto, Models.Phonebook>()
       .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.PhonebookName));
+
+      CreateMap<Models.Phonebook, PhonebookForResponseDto>()
+      .ForMember(dest => dest.PhonebookName, opt => opt.MapFrom(src => src.Name));
     }
   }
 }

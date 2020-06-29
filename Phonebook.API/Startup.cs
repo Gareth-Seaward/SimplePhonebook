@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Phonebook.API.ActionFilters;
 using Phonebook.API.Data;
 using Phonebook.API.Helpers;
 using Phonebook.API.Middleware;
@@ -35,6 +36,7 @@ namespace Phonebook.API
             
             ConfigureUtils(services);
             ConfigureRepositories(services);
+            ConfigureActionFilters(services);
             ConfigureJwtBearerAuthentication(services);
 
         }
@@ -49,6 +51,11 @@ namespace Phonebook.API
         {
             services.AddScoped<IAuthRepository, AuthRepository>(); 
             services.AddScoped<IPhonebookRepository,PhonebookRepository>();
+        }
+
+        private void ConfigureActionFilters(IServiceCollection services)
+        {
+          services.AddScoped<ValidatePhonebookIdAttribute>();
         }
         private void ConfigureJwtBearerAuthentication(IServiceCollection services)
         {

@@ -12,10 +12,14 @@ import { RegisterComponent } from './register/register.component';
 import { ErrorInterceptorsProvider } from './_services/error.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { EntiryListComponent } from './entiry-list/entiry-list.component';
+import { EntiryListComponent } from './entries/entiry-list/entiry-list.component';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from './routes';
+import { JwtModule } from '@auth0/angular-jwt';
 
+export function tokenGetter() {
+  return localStorage.getItem('token');
+}
 @NgModule({
    declarations: [
       AppComponent,
@@ -31,7 +35,15 @@ import { appRoutes } from './routes';
       FormsModule,
       BrowserAnimationsModule,
       BsDropdownModule.forRoot(),
-      RouterModule.forRoot(appRoutes)
+      RouterModule.forRoot(appRoutes),
+      JwtModule.forRoot({
+        config: {
+          // tslint:disable-next-line: object-literal-shorthand
+          tokenGetter: tokenGetter,
+          whitelistedDomains: ['localhost:5000'],
+          blacklistedRoutes: ['localhost:5000/v1/auth']
+        }
+      })
    ],
    providers: [
       AuthService,

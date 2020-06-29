@@ -1,19 +1,27 @@
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Phonebook.API.Data
 {
-  public class PhonebookRepository : IPhonebookRepository
+  public class PhonebookRepository : CommonRepository, IPhonebookRepository
   {
-    private readonly DataContext _context;
 
-    public PhonebookRepository(DataContext context)
-    {
-      _context = context;
-    }
+    public PhonebookRepository(DataContext context) 
+    :base(context)
+    {    }
     public async Task CreatePhonebook(Models.Phonebook phonebookToCreate)
     {
       await _context.Phonebooks.AddAsync(phonebookToCreate);
       await _context.SaveChangesAsync();
     }
+
+    public async Task<Models.Phonebook> GetPhonebook(int id)
+    {
+      return await _context.Phonebooks
+        .Include(p => p.User)
+        .FirstOrDefaultAsync(p => p.Id == id);
+    }
+
+
   }
 }
