@@ -1,5 +1,6 @@
 
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Phonebook.API.Data;
 using Phonebook.API.Dtos;
@@ -14,14 +15,17 @@ namespace Phonebook.API.Controllers
     private readonly IAuthRepository _authRepo;
     private readonly IPhonebookRepository _phonebookRepo;
     private readonly IJwtTokenGenerator _tokenGenerator;
+    private readonly IMapper _mapper;
 
     public AuthController(IAuthRepository authRepo,
       IPhonebookRepository phonebookRepo,
-      IJwtTokenGenerator tokenGenerator)
+      IJwtTokenGenerator tokenGenerator,
+      IMapper mapper)
     {
       _authRepo = authRepo;
       _phonebookRepo = phonebookRepo;
       _tokenGenerator = tokenGenerator;
+      _mapper = mapper;
     }
 
     [HttpPost("Register")]
@@ -32,18 +36,12 @@ namespace Phonebook.API.Controllers
       if (await _authRepo.DoesUserExist(userForRegisterDto.Username))
         return BadRequest("username already exists");
 
-      var userToCreate = new Models.User
-      {
-        Username = userForRegisterDto.Username
-      };
+      var userToCreate = _mapper.Map<Models.User>(userForRegisterDto);
 
       var createdUser = await _authRepo.Register(userToCreate, userForRegisterDto.Password);
 
-      var phonebookToCreate = new Models.Phonebook
-      {
-        Name = userForRegisterDto.PhonebookName,
-        User = createdUser
-      };
+      var phonebookToCreate = _mapper.Map<Models.Phonebook>(userForRegisterDto);
+      phonebookToCreate.User = createdUser;
 
       await _phonebookRepo.CreatePhonebook(phonebookToCreate);
 

@@ -1,4 +1,5 @@
 using System.Text;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Phonebook.API.Data;
+using Phonebook.API.Helpers;
+using Phonebook.API.Middleware;
 using Phonebook.API.Utils;
 
 namespace Phonebook.API
@@ -28,6 +31,8 @@ namespace Phonebook.API
                 x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();
             services.AddCors();
+            services.AddAutoMapper(typeof(Startup));
+            
             ConfigureUtils(services);
             ConfigureRepositories(services);
             ConfigureJwtBearerAuthentication(services);
@@ -69,6 +74,7 @@ namespace Phonebook.API
             }
 
             // app.UseHttpsRedirection();
+            app.ConfigureCustomExceptionMiddleware();
 
             app.UseRouting();
 
