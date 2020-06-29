@@ -4,6 +4,7 @@ import { PhonebookComponent } from './phonebook/phonebook.component';
 import { EntiryListComponent } from './entries/entiry-list/entiry-list.component';
 import { AuthGuard } from './_guards/auth.guard';
 import { PhonebookResolver } from './_resolvers/phonebook.resolver';
+import { EntryListResolver } from './_resolvers/entry-list.resolver';
 
 export const appRoutes: Routes = [
   { path: '', component: HomeComponent},
@@ -13,7 +14,7 @@ export const appRoutes: Routes = [
     canActivate:[AuthGuard],
     children:[
       { path: 'phonebook', component: PhonebookComponent, resolve: {phonebook: PhonebookResolver}},
-      { path: 'entries', component: EntiryListComponent}]
+      { path: 'entries', component: EntiryListComponent, resolve:{entries: EntryListResolver}}]
   },
   { path: '**', redirectTo: '', pathMatch: 'full'}
 ];

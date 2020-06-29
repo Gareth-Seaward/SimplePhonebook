@@ -16,6 +16,7 @@ import { EntiryListComponent } from './entries/entiry-list/entiry-list.component
 import { RouterModule } from '@angular/router';
 import { appRoutes } from './routes';
 import { JwtModule } from '@auth0/angular-jwt';
+import { EntryItemComponent } from './Entries/Entry-Item/Entry-Item.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -27,7 +28,8 @@ export function tokenGetter() {
       NavComponent,
       HomeComponent,
       RegisterComponent,
-      EntiryListComponent
+      EntiryListComponent,
+      EntryItemComponent
    ],
    imports: [
       BrowserModule,
