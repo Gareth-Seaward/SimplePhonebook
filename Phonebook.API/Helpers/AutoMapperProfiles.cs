@@ -19,6 +19,12 @@ namespace Phonebook.API.Helpers
       CreateMap<Models.Entry, EntryForResponseDto>();
 
       CreateMap<EntryForUpdateDto, Models.Entry>();
+
+      CreateMap<Models.Phonebook, UserForResponseDto>()
+      .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.User.Id))
+      .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
+      .ForMember(dest => dest.PhonebookId, opt => opt.MapFrom(src => src.Id))
+      .ForMember(dest => dest.PhonebookName, opt => opt.MapFrom(src => src.Name));
     }
   }
 }

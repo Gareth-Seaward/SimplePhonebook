@@ -20,6 +20,7 @@ export class AuthService {
         const user = response;
         if(user) {
           localStorage.setItem('token',user.token);
+          localStorage.setItem('user', JSON.stringify(user.userForResponse));
           this.decodedToken = this.jwtHelper.decodeToken(user.token);
           console.log(this.decodedToken);
         }
@@ -33,5 +34,11 @@ export class AuthService {
   loggedin(){
     const token = localStorage.getItem('token');
     return !this.jwtHelper.isTokenExpired(token);
+  }
+
+  updateUserPhonebook(phonebookname: string){
+    const user = JSON.parse(localStorage.getItem('user'));
+    user.phonebookName = phonebookname;
+    localStorage.setItem('user',JSON.stringify(user));
   }
 }

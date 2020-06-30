@@ -44,7 +44,7 @@ export class PhonebookComponent implements OnInit {
     this.phonebookService.updatePhonebook(this.authService.decodedToken.nameid, this.phonebook)
     .subscribe(next => {
       this.alertify.success('Phonebook updated successfully.');
-      console.log(this.phonebook);
+      this.authService.updateUserPhonebook(this.phonebook.phonebookName);
       this.router.navigate(['/entries']);
     },
     error => {

@@ -7,6 +7,7 @@ namespace Phonebook.API.Data
     {
       Task CreatePhonebook(Models.Phonebook phonebookToCreate);
       Task<Models.Phonebook> GetPhonebook(int id);
+      Task<Models.Phonebook> GetPhonebookForUser(int userId);
       Task SaveAsync();
     }
 }

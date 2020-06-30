@@ -56,8 +56,13 @@ namespace Phonebook.API.Controllers
       if (userFormrepo is null) return Unauthorized();
 
       var jwtToken = _tokenGenerator.GetJwt(userFormrepo);
+      var phonebookFromRepo = await _phonebookRepo.GetPhonebookForUser(userFormrepo.Id);
+      var userForResponse = _mapper.Map<Models.Phonebook, UserForResponseDto>(phonebookFromRepo);
 
-      return Ok(new { token = jwtToken });
+      return Ok(new {
+         token = jwtToken,
+         userForResponse
+         });
     }
   }
 }

@@ -1,3 +1,42 @@
-<p *ngFor="let entry of entries">
-  {{entry.id}},{{entry.name}} - {{entry.phoneNumber}}
-</p>
+<div class="container mt-2">
+  <h4 class="text-center text-primary">{{ user.phonebookName }}</h4>
+  <hr />
+  <div class="mb-2">
+    <button class="btn btn-success">
+      <i class="fa fa-plus-square"></i> Create new
+    </button>
+  </div>
+  <div *ngFor="let entry of entries">
+    <div class="list-inline-item mb-2">
+      <span class="mr-2">
+        <button
+          class="btn btn-outline-secondary"
+          [routerLink]="['/entries/', entry.id]"
+        >
+          <i class="fa fa-edit"></i>
+        </button>
+      </span>
+      <span class="mr-2">
+        <button class="btn btn-outline-primary"><i class="fa fa-trash"></i></button>
+      </span>
+    </div>
+    <div class="list-inline-item">
+      <h6>{{ entry.name }} - {{ entry.phoneNumber }}</h6>
+    </div>
+  </div>
+</div>
+
+<div class="d-flex justify-content-center">
+  <pagination
+    [boundaryLinks]="true"
+    [totalItems]="pagination.totalItems"
+    [itemsPerPage]="pagination.itemsPerPage"
+    [(ngModel)]="pagination.currentPage"
+    (pageChanged)="pagedChanged($event)"
+    previousText="&lsaquo;"
+    nextText="&rsaquo;"
+    firstText="&laquo;"
+    lastText="&raquo;"
+  >
+  </pagination>
+</div>

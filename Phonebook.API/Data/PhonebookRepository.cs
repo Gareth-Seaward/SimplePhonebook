@@ -22,6 +22,13 @@ namespace Phonebook.API.Data
         .FirstOrDefaultAsync(p => p.Id == id);
     }
 
+    public async Task<Models.Phonebook> GetPhonebookForUser(int userId)
+    {
+      return await _context.Phonebooks
+        .Include(p => p.User)
+        .FirstOrDefaultAsync(p => p.User.Id == userId);
+    }
+
 
   }
 }
