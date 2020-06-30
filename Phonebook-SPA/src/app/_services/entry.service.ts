@@ -36,4 +36,12 @@ getEntries(phonebookid: number, page?,itemsPerPage?, entryParams?)
   );
 }
 
+getEntry(phonebookid: number, entryid: number) : Observable<Entry> {
+  return this.http.get<Entry>(this.baseUrl + phonebookid + '/entries/' + entryid);
+}
+
+updateEntry(phonebookid: number, entry: Entry){
+  return this.http.put(this.baseUrl + phonebookid + '/entries/' + entry.id,entry);
+}
+
 }

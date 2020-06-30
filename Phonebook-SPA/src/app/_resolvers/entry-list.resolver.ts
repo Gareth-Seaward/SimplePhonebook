@@ -28,7 +28,6 @@ export class EntryListResolver implements Resolve<Entry[]>{
     return this.phonebookService.getPhonebook(this.authService.decodedToken.nameid)
     .pipe(
       flatMap(data => {
-        console.log(data);
         return this.entryService.getEntries(data.id, this.pageNumber, this.pageSize)
       .pipe(catchError(error => {
           this.alertify.error('Problem retrieving data');

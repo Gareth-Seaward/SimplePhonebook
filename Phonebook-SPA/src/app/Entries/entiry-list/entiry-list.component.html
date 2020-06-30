@@ -2,7 +2,7 @@
   <h4 class="text-center text-primary">{{ user.phonebookName }}</h4>
   <hr />
   <div class="mb-2">
-    <button class="btn btn-success">
+    <button class="btn btn-success" (click)="createNew()">
       <i class="fa fa-plus-square"></i> Create new
     </button>
   </div>
@@ -11,7 +11,7 @@
       <span class="mr-2">
         <button
           class="btn btn-outline-secondary"
-          [routerLink]="['/entries/', entry.id]"
+          (click)="toggleEdit(entry.id)"
         >
           <i class="fa fa-edit"></i>
         </button>
@@ -23,6 +23,7 @@
     <div class="list-inline-item">
       <h6>{{ entry.name }} - {{ entry.phoneNumber }}</h6>
     </div>
+    <app-Entry-Item *ngIf="entry.id < 0" [entry]="entry" (closeEditEmitter)="closeEdit($event)"></app-Entry-Item>
   </div>
 </div>
 

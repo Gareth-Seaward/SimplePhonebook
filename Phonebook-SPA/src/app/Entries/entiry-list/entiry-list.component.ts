@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Entry } from 'src/app/_models/entry';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Pagination, PaginatedResult } from 'src/app/_models/pagination';
 import { EntryService } from 'src/app/_services/entry.service';
 import { AlertifyService } from 'src/app/_services/alertify.service';
@@ -19,14 +19,14 @@ export class EntiryListComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private entryService: EntryService,
-    private alertify: AlertifyService) { }
+    private alertify: AlertifyService,
+    private router: Router) { }
 
   ngOnInit() {
     this.route.data.subscribe(data => {
-      this.entries = data['entries'].result;
-      this.pagination = data['entries'].pagination;
-      this.user = JSON.parse(localStorage.getItem('user'));
-      console.log(this.entries);
+        this.entries = data['entries'].result;
+        this.pagination = data['entries'].pagination;
+        this.user = JSON.parse(localStorage.getItem('user'));
     })
   }
 
@@ -46,6 +46,21 @@ export class EntiryListComponent implements OnInit {
         this.alertify.error(error);
       }
     );
+  }
+
+  createNew(){
+    this.router.navigate(['/entries/0']);
+  }
+
+  toggleEdit(entryid: number){
+    const entry = this.entries.find(x => x.id === entryid);
+    if(entry){
+      entry.id = entry.id * -1;
+    }
+  }
+
+  closeEdit(entryid: number){
+    this.loadUsers();
   }
 
 }
