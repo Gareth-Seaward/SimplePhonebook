@@ -38,13 +38,11 @@ export class EntiryListComponent implements OnInit {
   }
 
   startswithChanged(startswith){
-    console.log(startswith);
     if(startswith !== undefined) {
       this.entryParams.StartsWith = startswith;
     } else {
       this.entryParams.StartsWith = null;
     }
-    console.log(this.entryParams);
     this.loadUsers();
   }
 

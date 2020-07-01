@@ -27,14 +27,12 @@ getEntries(phonebookid: number, page?,itemsPerPage?, entryParams?)
   if(entryParams != null
     && entryParams.StartsWith !== undefined
     && entryParams.StartsWith !== null){
-    console.log(entryParams);
     params = params.append('StartsWith', entryParams.StartsWith);
   }
 
   if(entryParams != null
     && entryParams.search !== null
     && entryParams.search !== undefined){
-    console.log(entryParams);
     params = params.append('Match', entryParams.search);
   }
 
