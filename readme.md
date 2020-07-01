@@ -1,4 +1,4 @@
-#Simple Phonebook App
+# Simple Phonebook App
 
 This is a simple phonebook application to register as a user with a phonebook name and to manage your contacts as entries in your phoneboook. 
 
