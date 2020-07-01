@@ -48,4 +48,8 @@ addEntry(phonebookid: number, entry: Entry){
   return this.http.post(this.baseUrl + phonebookid + '/entries',entry );
 }
 
+deleteEntry(phonebookid: number, entryid: number){
+  return this.http.delete(this.baseUrl + phonebookid + '/entries/' + entryid);
+}
+
 }
