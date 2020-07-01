@@ -24,6 +24,20 @@ getEntries(phonebookid: number, page?,itemsPerPage?, entryParams?)
     params = params.append('pageSize', itemsPerPage);
   }
 
+  if(entryParams != null
+    && entryParams.StartsWith !== undefined
+    && entryParams.StartsWith !== null){
+    console.log(entryParams);
+    params = params.append('StartsWith', entryParams.StartsWith);
+  }
+
+  if(entryParams != null
+    && entryParams.search !== null
+    && entryParams.search !== undefined){
+    console.log(entryParams);
+    params = params.append('Match', entryParams.search);
+  }
+
   return this.http.get<Entry[]>(this.baseUrl + phonebookid + '/entries', {observe: 'response', params})
   .pipe(
     map(response => {

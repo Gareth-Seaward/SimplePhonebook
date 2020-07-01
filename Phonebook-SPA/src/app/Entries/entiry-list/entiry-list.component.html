@@ -1,11 +1,82 @@
 <div class="container mt-2">
   <h4 class="text-center text-primary">{{ user.phonebookName }}</h4>
   <hr />
-  <div class="mb-2">
-    <button class="btn btn-success" (click)="createNew()">
-      <i class="fa fa-plus-square"></i> Create new
-    </button>
+  <div class="container mb-2">
+    <form class="form-inline" #form="ngForm" (ngSubmit)="loadUsers()">
+      <div class="form-group mr-4">
+        <button class="btn btn-success" (click)="createNew()">
+          <i class="fa fa-plus-square"></i> Create new
+        </button>
+      </div>
+      <div class="form-group ">
+        <input class="form-control" name="search" [(ngModel)]="entryParams.search" type="text" placeholder="Search for...">
+      </div>
+      <div class="form-group">
+        <button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
+      </div>
+    </form>
+
+    <div class="btn-group mt-4" btnRadioGroup [(ngModel)]="startswith" (ngModelChange)="startswithChanged($event)">
+      <label class="btn btn-outline-info" btnRadio="A"
+             uncheckable tabindex="0" role="button">A</label>
+      <label class="btn btn-outline-info" btnRadio="B"
+             uncheckable tabindex="0" role="button">B</label>
+      <label class="btn btn-outline-info" btnRadio="C"
+             uncheckable tabindex="0" role="button">C</label>
+      <label class="btn btn-outline-info" btnRadio="D"
+             uncheckable tabindex="0" role="button">D</label>
+      <label class="btn btn-outline-info" btnRadio="E"
+             uncheckable tabindex="0" role="button">E</label>
+      <label class="btn btn-outline-info" btnRadio="F"
+             uncheckable tabindex="0" role="button">F</label>
+      <label class="btn btn-outline-info" btnRadio="G"
+             uncheckable tabindex="0" role="button">G</label>
+      <label class="btn btn-outline-info" btnRadio="H"
+             uncheckable tabindex="0" role="button">H</label>
+      <label class="btn btn-outline-info" btnRadio="I"
+             uncheckable tabindex="0" role="button">I</label>
+      <label class="btn btn-outline-info" btnRadio="J"
+             uncheckable tabindex="0" role="button">J</label>
+      <label class="btn btn-outline-info" btnRadio="K"
+             uncheckable tabindex="0" role="button">K</label>
+      <label class="btn btn-outline-info" btnRadio="L"
+             uncheckable tabindex="0" role="button">L</label>
+      <label class="btn btn-outline-info" btnRadio="M"
+             uncheckable tabindex="0" role="button">M</label>
+      <label class="btn btn-outline-info" btnRadio="N"
+             uncheckable tabindex="0" role="button">N</label>
+      <label class="btn btn-outline-info" btnRadio="O"
+             uncheckable tabindex="0" role="button">O</label>
+      <label class="btn btn-outline-info" btnRadio="P"
+             uncheckable tabindex="0" role="button">P</label>
+      <label class="btn btn-outline-info" btnRadio="Q"
+             uncheckable tabindex="0" role="button">Q</label>
+      <label class="btn btn-outline-info" btnRadio="R"
+             uncheckable tabindex="0" role="button">R</label>
+      <label class="btn btn-outline-info" btnRadio="S"
+             uncheckable tabindex="0" role="button">S</label>
+      <label class="btn btn-outline-info" btnRadio="T"
+             uncheckable tabindex="0" role="button">T</label>
+      <label class="btn btn-outline-info" btnRadio="U"
+             uncheckable tabindex="0" role="button">U</label>
+      <label class="btn btn-outline-info" btnRadio="V"
+             uncheckable tabindex="0" role="button">V</label>
+      <label class="btn btn-outline-info" btnRadio="W"
+             uncheckable tabindex="0" role="button">W</label>
+      <label class="btn btn-outline-info" btnRadio="X"
+             uncheckable tabindex="0" role="button">X</label>
+      <label class="btn btn-outline-info" btnRadio="Y"
+             uncheckable tabindex="0" role="button">Y</label>
+      <label class="btn btn-outline-info" btnRadio="Z"
+             uncheckable tabindex="0" role="button">Z</label>
+    </div>
+    <form class="form-inline" #form="ngForm" (ngSubmit)="loadUsers()">
+      <div class="form-group">
+
+      </div>
+    </form>
   </div>
+  <hr />
   <div *ngFor="let entry of entries">
     <div class="list-inline-item mb-2">
       <span class="mr-2">

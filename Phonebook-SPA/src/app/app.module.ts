@@ -13,6 +13,7 @@ import { ErrorInterceptorsProvider } from './_services/error.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { EntiryListComponent } from './entries/entiry-list/entiry-list.component';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from './routes';
@@ -42,6 +43,7 @@ export function tokenGetter() {
       BrowserAnimationsModule,
       BsDropdownModule.forRoot(),
       PaginationModule.forRoot(),
+      ButtonsModule.forRoot(),
       RouterModule.forRoot(appRoutes),
       JwtModule.forRoot({
         config: {

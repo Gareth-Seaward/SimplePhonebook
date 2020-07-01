@@ -11,6 +11,7 @@ import { AlertifyService } from "src/app/_services/alertify.service";
   styleUrls: ["./entiry-list.component.css"],
 })
 export class EntiryListComponent implements OnInit {
+  startswith = '';
   entries: Entry[];
   entryParams: any = {};
   pagination: Pagination;
@@ -33,6 +34,17 @@ export class EntiryListComponent implements OnInit {
 
   pagedChanged(event: any) {
     this.pagination.currentPage = event.page;
+    this.loadUsers();
+  }
+
+  startswithChanged(startswith){
+    console.log(startswith);
+    if(startswith !== undefined) {
+      this.entryParams.StartsWith = startswith;
+    } else {
+      this.entryParams.StartsWith = null;
+    }
+    console.log(this.entryParams);
     this.loadUsers();
   }
 
