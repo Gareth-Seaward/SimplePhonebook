@@ -44,4 +44,8 @@ updateEntry(phonebookid: number, entry: Entry){
   return this.http.put(this.baseUrl + phonebookid + '/entries/' + entry.id,entry);
 }
 
+addEntry(phonebookid: number, entry: Entry){
+  return this.http.post(this.baseUrl + phonebookid + '/entries',entry );
+}
+
 }

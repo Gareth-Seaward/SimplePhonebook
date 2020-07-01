@@ -33,7 +33,8 @@ export class EntryItemComponent implements OnInit {
   createEditItemForm(){
     this.editItemForm = this.fb.group({
       name: [this.entry.name, Validators.required],
-      phoneNumber: [this.entry.phoneNumber, Validators.required]
+      phoneNumber: [this.entry.phoneNumber, [Validators.required,
+        Validators.pattern('(\\+27|27|0)[ ]*[0-9]{2}[ ]*[0-9]{3}[ ]*[0-9]{4}')]]
     });
   }
 

@@ -1,19 +1,33 @@
-
- <div class="container mb-2">
- <form [formGroup]="editItemForm" (ngSubmit)="saveEntry()">
-    <h6 class="text-center text-primary" *ngIf="entry.id !== 0; else newEntry">Edit Entry</h6>
-    <ng-template #newEntry>
-      <h6 class="text-center text-primary" >New Entry</h6>
-    </ng-template>
+<div class="container mb-2">
+  <form [formGroup]="editItemForm" (ngSubmit)="saveEntry()">
+    <h6 class="text-center text-primary">Edit Entry</h6>
     <hr />
     <div class="form-group">
-      <input type="text" class="form-control" formControlName="name"/>
+      <input
+        type="text"
+        [ngClass]="{
+          'is-invalid':
+            editItemForm.get('name').errors && editItemForm.get('name').touched
+        }"
+        class="form-control"
+        formControlName="name"
+      />
+      <div class="invalid-feedback">Please enter a name</div>
     </div>
     <div class="form-group">
-      <input type="text" class="form-control" formControlName="phoneNumber">
+      <input type="text" [ngClass]="{
+        'is-invalid':
+        editItemForm.get('phoneNumber').errors && editItemForm.get('phoneNumber').touched
+      }" class="form-control" formControlName="phoneNumber" />
+      <div class="invalid-feedback">Please enter a phone number</div>
     </div>
-    <button class="btn btn-success" [disabled]="!editItemForm.valid" type="submit">Save</button>
-    <button class="btn btn-default" *ngIf="entry.id === 0" (click)="cancelNew()">Cancel</button>
+
+    <button
+      class="btn btn-success"
+      [disabled]="!editItemForm.valid"
+      type="submit"
+    >
+      Save
+    </button>
   </form>
 </div>
-

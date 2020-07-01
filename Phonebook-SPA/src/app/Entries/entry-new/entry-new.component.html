@@ -1,0 +1,42 @@
+<div class="container mt-2">
+  <form [formGroup]="editItemForm" (ngSubmit)="saveEntry()">
+    <h4 class="text-center text-primary">New Entry</h4>
+    <hr />
+    <div class="form-group">
+        <label for="entryname"><i class="fa fa-user"></i> Entry name</label>
+        <input
+          type="text"
+          [ngClass]="{
+            'is-invalid':
+            editItemForm.get('name').errors && editItemForm.get('name').touched
+          }"
+          name="entryname"
+          class="form-control"
+          formControlName="name"
+        />
+        <div class="invalid-feedback">Please enter a name</div>
+    </div>
+    <div class="form-group">
+      <label for="phonenumber"><i class="fa fa-phone"></i> Phone number</label>
+      <input
+        type="text"
+        [ngClass]="{
+          'is-invalid':
+          editItemForm.get('phoneNumber').errors && editItemForm.get('phoneNumber').touched
+        }"
+        class="form-control"
+        name="phonenumber"
+        formControlName="phoneNumber"
+      />
+      <div class="invalid-feedback">Please enter a phone number</div>
+    </div>
+    <button
+      class="btn btn-success"
+      [disabled]="!editItemForm.valid"
+      type="submit"
+    >
+      Save
+    </button>
+    <button class="btn btn-default" (click)="closeNew()">Cancel</button>
+  </form>
+</div>

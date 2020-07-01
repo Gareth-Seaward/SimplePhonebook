@@ -49,7 +49,7 @@ export class EntiryListComponent implements OnInit {
   }
 
   createNew(){
-    this.router.navigate(['/entries/0']);
+    this.router.navigate(['/newentry']);
   }
 
   toggleEdit(entryid: number){

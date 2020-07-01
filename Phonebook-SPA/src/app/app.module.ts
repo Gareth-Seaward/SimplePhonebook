@@ -18,6 +18,7 @@ import { RouterModule } from '@angular/router';
 import { appRoutes } from './routes';
 import { JwtModule } from '@auth0/angular-jwt';
 import { EntryItemComponent } from './Entries/Entry-Item/Entry-Item.component';
+import { EntryNewComponent } from './Entries/entry-new/entry-new.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -30,7 +31,8 @@ export function tokenGetter() {
       HomeComponent,
       RegisterComponent,
       EntiryListComponent,
-      EntryItemComponent
+      EntryItemComponent,
+      EntryNewComponent
    ],
    imports: [
       BrowserModule,
