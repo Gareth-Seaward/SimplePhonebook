@@ -8,9 +8,9 @@ namespace Phonebook.API.Data
     public DataContext(DbContextOptions<DataContext> options) : base(options)
     { }
 
-    public DbSet<Models.User> Users { get; set; }
-    public DbSet<Models.Phonebook> Phonebooks { get; set; }
-    public DbSet<Models.Entry> Entries {get;set;}
+    public virtual DbSet<Models.User> Users { get; set; }
+    public virtual DbSet<Models.Phonebook> Phonebooks { get; set; }
+    public virtual DbSet<Models.Entry> Entries {get;set;}
 
   }
 }

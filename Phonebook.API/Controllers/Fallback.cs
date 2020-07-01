@@ -1,14 +1,16 @@
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Phonebook.API.Controllers
 {
-    public class Fallback : Controller
+  [ExcludeFromCodeCoverage] //Standard fallback pattern
+  public class Fallback : Controller
+  {
+    public IActionResult Index()
     {
-        public IActionResult Index()
-        {
-          return PhysicalFile(
-            Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "index.html"), "text/HTML");
-        }
+      return PhysicalFile(
+        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "index.html"), "text/HTML");
     }
+  }
 }

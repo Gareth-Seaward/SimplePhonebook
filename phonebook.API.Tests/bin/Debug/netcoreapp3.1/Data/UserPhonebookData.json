@@ -1,0 +1,18 @@
+[
+  {
+    "Name": "Jack's Phonebook",
+    "User": 
+    {
+      "Username": "Jack",
+      "Password" : "password"
+    }
+  },
+  {
+    "Name": "Natasha's Phonebook",
+    "User": 
+    {
+      "Username": "Tash",
+      "Password" : "password"
+    }
+  } 
+]
