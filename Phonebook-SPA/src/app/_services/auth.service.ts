@@ -22,7 +22,6 @@ export class AuthService {
           localStorage.setItem('token',user.token);
           localStorage.setItem('user', JSON.stringify(user.userForResponse));
           this.decodedToken = this.jwtHelper.decodeToken(user.token);
-          console.log(this.decodedToken);
         }
       }));
   }
@@ -33,7 +32,11 @@ export class AuthService {
 
   loggedin(){
     const token = localStorage.getItem('token');
-    return !this.jwtHelper.isTokenExpired(token);
+    if(token){
+      return !this.jwtHelper.isTokenExpired(token);
+    } else {
+      return false;
+    }
   }
 
   updateUserPhonebook(phonebookname: string){
