@@ -11,12 +11,6 @@ namespace Phonebook.API.ActionFilters
 {
   public class ValidateUSerIdAttribute : JwtClaims, IAsyncActionFilter
   {
-    private readonly IPhonebookRepository _phonebookRepo;
-
-    public ValidateUSerIdAttribute(IPhonebookRepository phonebookRepo)
-    {
-      _phonebookRepo = phonebookRepo;
-    }
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
       if (!await IsDoActionFilter(context)) return;
