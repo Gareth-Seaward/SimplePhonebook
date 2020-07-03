@@ -10,7 +10,7 @@ using Phonebook.API.Controllers;
 using Phonebook.API.Data;
 using Phonebook.API.Dtos;
 using Phonebook.API.Helpers;
-using Phonebook.API.Models;
+using Models = Phonebook.API.Models;
 
 namespace phonebook.API.Tests.Controller
 {
@@ -68,26 +68,98 @@ namespace phonebook.API.Tests.Controller
         HttpContext = httpContext.Object
       };
 
-      var testEntry = new Entry { Id = 1 };
+      var testEntry = new Models.Entry { Id = 1 };
       items.SetupGet(i => i[HttpContextConstants.EntryItem]).Returns(testEntry);
 
       var testResponseEntry = new EntryForResponseDto { Id = 1 };
-      mockMapper.Setup(mm => mm.Map<Entry, EntryForResponseDto>(testEntry)).Returns(testResponseEntry);
+      mockMapper.Setup(mm => mm.Map<Models.Entry, EntryForResponseDto>(testEntry)).Returns(testResponseEntry);
 
       var result = await controller.GetEntry(1, 1);
 
       Assert.That((result as OkObjectResult).Value, Is.EqualTo(testResponseEntry));
     }
 
-    private PagedList<Entry> GetTestPagedEntries()
+    [Test]
+    public async Task UpdatesEntry_On_Repo()
     {
-      var entries = new List<Entry>
+      var httpContext = new Mock<HttpContext>(MockBehavior.Strict);
+      var items = new Mock<IDictionary<object, object>>();
+      httpContext.SetupGet(hc => hc.Items).Returns(items.Object);
+      var controller = new EntriesController(mockRepo.Object, mockMapper.Object);
+      controller.ControllerContext = new ControllerContext
+      {
+        HttpContext = httpContext.Object
+      };
+
+      var testEntry = new Models.Entry { Id = 1 };
+      items.SetupGet(i => i[HttpContextConstants.EntryItem]).Returns(testEntry);
+
+      var testEntryForUpdate = new EntryForUpdateDto { Name = "TestName", PhoneNumber = "TestPhoneNumber" };
+      mockMapper.Setup(mm => mm.Map<EntryForUpdateDto, Models.Entry>(testEntryForUpdate, testEntry));
+
+      var result = await controller.UpdateEntry(1, 2, testEntryForUpdate);
+
+      mockRepo.Verify(mr => mr.SaveAsync());
+
+      Assert.That(result, Is.InstanceOf<OkResult>());
+    }
+
+    [Test]
+    public async Task CreatesNewEntry_For_givenInput()
+    {
+      var httpContext = new Mock<HttpContext>(MockBehavior.Strict);
+      var items = new Mock<IDictionary<object, object>>();
+      httpContext.SetupGet(hc => hc.Items).Returns(items.Object);
+      var controller = new EntriesController(mockRepo.Object, mockMapper.Object);
+      controller.ControllerContext = new ControllerContext
+      {
+        HttpContext = httpContext.Object
+      };
+
+      var testPhonebook = new Models.Phonebook { Id = 1, Name = "TestPhonebook" };
+      items.SetupGet(i => i[HttpContextConstants.PhonebookItem]).Returns(testPhonebook);
+
+      var testEntryForCreate = new EntryForUpdateDto { Name = "Test Name To Create", PhoneNumber = "Test phonenumber To Create" };
+      var testEntryForRepo = new Models.Entry { Name = "Test name", PhoneNumber = "Test Phonenumber" };
+      mockMapper.Setup(mm => mm.Map<EntryForUpdateDto, Models.Entry>(testEntryForCreate)).Returns(testEntryForRepo);
+
+      var testEntryForResponse = new EntryForResponseDto { Id = 2, Name = "test", PhoneNumber = "Test" };
+      mockMapper.Setup(mm => mm.Map<Models.Entry, EntryForResponseDto>(testEntryForRepo)).Returns(testEntryForResponse);
+      var result = await controller.CreateEntry(1, testEntryForCreate);
+
+      Assert.That(result, Is.InstanceOf<CreatedAtRouteResult>());
+    }
+
+    [Test]
+    public async Task DeletesEntry_On_Repo()
+    {
+      var httpContext = new Mock<HttpContext>(MockBehavior.Strict);
+      var items = new Mock<IDictionary<object, object>>();
+      httpContext.SetupGet(hc => hc.Items).Returns(items.Object);
+      var controller = new EntriesController(mockRepo.Object, mockMapper.Object);
+      controller.ControllerContext = new ControllerContext
+      {
+        HttpContext = httpContext.Object
+      };
+
+      var testEntry = new Models.Entry { Id = 1 };
+      items.SetupGet(i => i[HttpContextConstants.EntryItem]).Returns(testEntry);
+
+      var result = await controller.DeleteEntry(1, 2);
+
+      mockRepo.Verify(mr => mr.DeleteEntry(testEntry));
+      Assert.That(result, Is.InstanceOf<OkResult>());
+    }
+
+    private PagedList<Models.Entry> GetTestPagedEntries()
+    {
+      var entries = new List<Models.Entry>
           {
-            new Entry{Id = 1},
-            new Entry{Id = 2},
-            new Entry{Id = 3},
+            new Models.Entry{Id = 1},
+            new Models.Entry{Id = 2},
+            new Models.Entry{Id = 3},
           };
-      return new PagedList<Entry>(entries, 3, 1, 5);
+      return new PagedList<Models.Entry>(entries, 3, 1, 5);
     }
 
     private IEnumerable<EntryForResponseDto> GetTestResponseEntries()

@@ -57,7 +57,7 @@ namespace DatingApp.API.Controllers
 
     private async Task<Models.Phonebook> GetPhonebookFromRepo(int id)
     {
-      var phonebook = HttpContext.Items[HttpContextConstants.PhonebookItem] as Models.Phonebook;
+      var phonebook = HttpContext?.Items[HttpContextConstants.PhonebookItem] as Models.Phonebook;
       if (phonebook is null)
         phonebook = await _phonebookRepo.GetPhonebook(id);
       return phonebook;
